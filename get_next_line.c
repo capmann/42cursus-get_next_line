@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/08 19:54:41 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/10 19:01:55 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,22 @@ char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+int	get_next_line(int fd, char **line)
+{
+	int fd;
+	int ret;
+	char buf[BUFFER_SIZE + 1];
+	static char bufbuf[BUFFER_SIZE + 1];
+	unsigned int	i;
+	
+	i = 0;
+	while ((ret = read(fd, buf, BUFFER_SIZE)) || !ft_search(bufbuf))
+	{
+		buf[ret] = '\0';
+		ft_strcpy(*line, buf);
+	}
+}
+
 int	main()
 {
 	int fd;
@@ -79,16 +95,8 @@ int	main()
 		ft_putstr("open() erreur");
 		return (1);
 	}
-	while ((ret = read(fd, buf, BUFFER_SIZE)) || !ft_search(bufbuf))
-	{
-		buf[ret] = '\0';
-		ft_strcpy(bufbuf, buf);
-		ft_putstr(bufbuf);
-	}
-	if (close(fd) == -1)
-	{
-		ft_putstr("close() error");
-		return (1);
-	}	
+	while (get_next_line(fd, line) == 1)
+		printf("%s", line);
+	printf("%s", line);
 	return (0);
 }
