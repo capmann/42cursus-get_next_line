@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/10 19:01:55 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/11 23:54:00 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,153 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (s)
-	{
-		while (s[i])
-		{
-			ft_putchar(s[i]);
-			i++;
-		}
-	}
-}
-
-int	ft_search(char *buf)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (buf[i])
-	{
-		if (buf[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*ft_strcpy(char *dest, char *src)
+size_t	ft_strlen(const char *s)
 {
 	int i;
 
 	i = 0;
-	while (src[i] != '\0')
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	unsigned int i;
+	unsigned int j;
+
+	i = 0;
+	j = 0;
+	if (!dst || !src)
+		return (0);
+	if (dstsize == 0)
 	{
-		dest[i] = src[i];
+		while (src[i])
+			i++;
+		return (i);
+	}
+	while (src[i] && i < dstsize - 1)
+	{
+		dst[i] = src[i];
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	dst[i] = '\0';
+	while (src[j] != '\0')
+		j++;
+	return (j);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char			*memory;
+	unsigned int	i;
+	unsigned int	len_s1;
+
+	i = 0;
+	len_s1 = ft_strlen(s1);
+	if (!(memory = malloc(sizeof(char) * (len_s1 + 1))))
+		return (0);
+	while (s1[i])
+	{
+		memory[i] = s1[i];
+		i++;
+	}
+	memory[i] = '\0';
+	return (memory);
+}
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+	unsigned int i;
+	unsigned int j;
+	unsigned int len_src;
+	unsigned int len_dst;
+
+	i = 0;
+	j = 0;
+	len_dst = ft_strlen(dst);
+	len_src = ft_strlen((char *)src);
+	if (!dst || !src)
+		return (0);
+	if (dstsize == 0 || len_dst >= dstsize)
+		return (len_src + dstsize);
+	while (dst[i])
+		i++;
+	while (src[j] && j < dstsize - len_dst - 1)
+	{
+		dst[i] = src[j];
+		i++;
+		j++;
+	}
+	dst[i] = '\0';
+	return (len_src + len_dst);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned int	i;
+	unsigned char	d;
+
+	i = 0;
+	d = (unsigned char)c;
+	while (s[i] != d && s[i])
+		i++;
+	if (s[i] == 0 && d != 0)
+		return (0);
+	return ((char *)&s[i]);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	unsigned int	i;
+	unsigned int	j;
+	char			*mem;
+	unsigned int	len;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (0);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	if (!(mem = malloc(sizeof(char) * (len + 1))))
+		return (0);
+	ft_strlcpy(mem, s1, (ft_strlen(mem) + ft_strlen(s1) + 1));
+	ft_strlcat(mem, s2, (ft_strlen(mem) + ft_strlen(s2) + 1));
+	return (mem);
+}
+
+char	*read_line(int fd, char *buf, char **line)
+{
+	char *tmp;
+	int ret;
+	
+	ret = 1;
+	while (!(ft_strchr(*line, '\n')) && ret)
+	{
+		ret = read(fd, buf, BUFFER_SIZE);
+		buf[ret] = 0;
+		tmp = *line;
+		*line = ft_strjoin(*line, buf);
+		free (tmp);
+	}
+	free (buf);
+	return (*line);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	int fd;
-	int ret;
 	char buf[BUFFER_SIZE + 1];
 	static char bufbuf[BUFFER_SIZE + 1];
-	unsigned int	i;
 	
-	i = 0;
-	while ((ret = read(fd, buf, BUFFER_SIZE)) || !ft_search(bufbuf))
+	if (fd < 0 || !line || BUFFER_SIZE <= 0) 
+		return (-1);
+	bufbuf = read_line(fd, buf, line);
+	if (*bufbuf)
 	{
-		buf[ret] = '\0';
-		ft_strcpy(*line, buf);
-	}
-}
-
-int	main()
-{
-	int fd;
-	int ret;
-	char buf[BUFFER_SIZE + 1];
-	static char bufbuf[BUFFER_SIZE + 1];
-	unsigned int	i;
-
-	i = 0;
-	fd = open("test.c", O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr("open() erreur");
+		*line = ft_strdup(bufbuf);
 		return (1);
 	}
-	while (get_next_line(fd, line) == 1)
-		printf("%s", line);
-	printf("%s", line);
 	return (0);
 }
