@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/11 23:54:00 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/12 18:04:36 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,18 +150,5 @@ char	*read_line(int fd, char *buf, char **line)
 	return (*line);
 }
 
-int	get_next_line(int fd, char **line)
-{
-	char buf[BUFFER_SIZE + 1];
-	static char bufbuf[BUFFER_SIZE + 1];
-	
-	if (fd < 0 || !line || BUFFER_SIZE <= 0) 
-		return (-1);
-	bufbuf = read_line(fd, buf, line);
-	if (*bufbuf)
-	{
-		*line = ft_strdup(bufbuf);
-		return (1);
-	}
-	return (0);
-}
+//int	get_next_line(int fd, char **line)
+
