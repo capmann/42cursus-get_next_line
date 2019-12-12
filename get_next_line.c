@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/12 18:04:36 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/12 19:05:21 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,8 @@ char	*read_line(int fd, char *buf, char **line)
 	int ret;
 	
 	ret = 1;
-	while (!(ft_strchr(*line, '\n')) && ret)
+	buf = NULL;
+	while (!(ft_strchr(buf, '\n')) && ret)
 	{
 		ret = read(fd, buf, BUFFER_SIZE);
 		buf[ret] = 0;
@@ -150,5 +151,16 @@ char	*read_line(int fd, char *buf, char **line)
 	return (*line);
 }
 
-//int	get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
+{
+	static char	*tmp;
+	char		*buf;
+	
+	if (fd < 0 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	if (!read_line(fd, buf, &tmp))
+		return (-1);
+	if (*line)
+		tmp = ft_strdup(*line)
+}
 
