@@ -6,13 +6,13 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/15 00:14:51 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/15 18:07:42 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_search(char *s)
+int		ft_search(char *s)
 {
 	unsigned int	i;
 
@@ -53,14 +53,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (mem);
 }
 
-int	get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
 	static char *tmp;
-	int ret;
-	int	len;
-	int	i;
-	char buf[BUFFER_SIZE + 1];
-	
+	int			ret;
+	int			len;
+	int			i;
+	char		buf[BUFFER_SIZE + 1];
+
 	ret = 1;
 	if (!line || BUFFER_SIZE <= 0)
 		return (-1);
@@ -71,14 +71,18 @@ int	get_next_line(int fd, char **line)
 			return (-1);
 		buf[ret] = 0;
 		tmp = ft_strjoin(tmp, buf);
-	}	
+	}
 	len = ft_strlen(tmp);
-	*line  = ft_substr(tmp, 0, i);
+	if (i < 0)
+		i = len;
+	*line = ft_substr(tmp, 0, i);
 	tmp = ft_substr(tmp, i + 1, len - i - 1);
 	if (ret == 0)
+	{	
+		free(tmp);
 		return (0);
+	}
 	else if (*line)
 		return (1);
 	return (-1);
 }
-

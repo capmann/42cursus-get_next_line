@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 00:03:56 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/15 00:09:26 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/15 17:58:49 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
 	char			*memory;
@@ -34,10 +34,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (0);
 	if (start >= ft_strlen(s))
 	{
-		/*if (!(memory = malloc(1)))
+		if (!(memory = malloc(1)))
 			return (0);
-		memory[0] = 0;*/
-		return (NULL);
+		memory[0] = 0;
+		return (memory);
 	}
 	if (!(memory = malloc(sizeof(char) * (len + 1))))
 		return (0);
@@ -47,6 +47,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	memory[i] = '\0';
+	if (start != 0)
+		free(s);
 	return (memory);
 }
 
