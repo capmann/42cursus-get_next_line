@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/17 22:33:27 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/17 22:44:18 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int		get_next_line(int fd, char **line)
 	tmp = ft_substr(tmp, i + 1, len - i - 1);
 	if (ret == 0)
 	{	
+		tmp = NULL;
 		free(tmp);
 		return (0);
 	}
