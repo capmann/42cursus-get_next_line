@@ -6,13 +6,15 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/11 23:29:12 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/15 17:59:16 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/17 21:01:44 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
+
 int get_next_line(int fd, char **line);
 
 int main(int ac, char **ag)
@@ -31,6 +33,7 @@ int main(int ac, char **ag)
 	}
 	printf("%d -> %s\n", i, line);
 	free(line);
+	close(fd);
 	//printf("%d -> %s\n", get_next_line(fd, &line), line);
 	system("leaks a.out");
 }
