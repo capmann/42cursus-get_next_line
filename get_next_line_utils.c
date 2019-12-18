@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 00:03:56 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/18 18:23:39 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/18 21:03:21 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		return (0);
 	if (start > ft_strlen(s))
 	{
-		if (!(memory = malloc(1)))
+		if (!(memory = malloc(2)))
 			return (0);
 		memory[0] = 0;
+		free(s);
+		s = 0;
 		return (memory);
 	}
 	if (!(memory = malloc(sizeof(char) * (len + 1))))
