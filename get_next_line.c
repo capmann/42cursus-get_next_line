@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 21:45:13 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/17 22:44:18 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/18 18:36:04 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		ft_strlcat(mem, s2, (ft_strlen(mem) + ft_strlen(s2) + 1));
 	}
 	free(s1);
+	s1 = 0;
 	return (mem);
 }
 
@@ -79,8 +80,8 @@ int		get_next_line(int fd, char **line)
 	tmp = ft_substr(tmp, i + 1, len - i - 1);
 	if (ret == 0)
 	{	
-		tmp = NULL;
 		free(tmp);
+		tmp = 0;
 		return (0);
 	}
 	else if (*line)

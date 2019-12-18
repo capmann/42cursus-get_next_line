@@ -6,7 +6,7 @@
 /*   By: cmarteau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/11 23:29:12 by cmarteau          #+#    #+#             */
-/*   Updated: 2019/12/17 22:46:43 by cmarteau         ###   ########.fr       */
+/*   Updated: 2019/12/18 18:35:29 by cmarteau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ int main(int ac, char **ag)
 	{
 		printf("%d -> %s\n", i, line);
 		free(line);
+		line = 0;
 	}
 	printf("%d -> %s\n", i, line);
 	free(line);
+	line = 0;
+	close(fd);
 	//printf("%d -> %s\n", get_next_line(fd, &line), line);
 	system("leaks a.out");
 }
